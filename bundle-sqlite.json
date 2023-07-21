@@ -9,7 +9,7 @@
                         "class": "esb.bundles.core.sqlite.SqliteConsumer"
                     },
                     "producer": {
-                        "class": "esb.bundles.core.sqlite.SqliteConsumer"
+                        "class": "esb.bundles.core.sqlite.SqliteProducer"
                     }
                 }
             }
