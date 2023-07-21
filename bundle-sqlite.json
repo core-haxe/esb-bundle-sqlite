@@ -1,0 +1,18 @@
+{
+    "bundles": {
+        "bundle-sqlite": {
+            "name": "bundle-sqlite",
+            "bundle-file": "bundle-sqlite",
+            "prefixes": {
+                "sqlite": {
+                    "consumer": {
+                        "class": "esb.bundles.core.sqlite.SqliteConsumer"
+                    },
+                    "producer": {
+                        "class": "esb.bundles.core.sqlite.SqliteConsumer"
+                    }
+                }
+            }
+        }
+    }
+}
