@@ -24,7 +24,7 @@ class SqliteConsumer implements IConsumer {
             from(uri, (uri, message) -> {
                 return new Promise((resolve, reject) -> {
                     // TODO: do better
-                    var pathParts = uri.path.split("/");
+                    var pathParts = uri.fullPath.split("/");
                     var tableName = pathParts.pop();
                     var dbName = pathParts.join("/");
 
