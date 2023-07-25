@@ -4,6 +4,8 @@
 
 --library promises
 --library hxnodejs
+--library db-core
+--library db-sqlite
 --library sqlite3
 
 --class-path ../esb/common/esb-common

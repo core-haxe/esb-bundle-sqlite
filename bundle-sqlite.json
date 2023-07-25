@@ -6,7 +6,8 @@
             "prefixes": {
                 "sqlite": {
                     "consumer": {
-                        "class": "esb.bundles.core.sqlite.SqliteConsumer"
+                        "class": "esb.bundles.core.sqlite.SqliteConsumer",
+                        "max-instances": 10
                     },
                     "producer": {
                         "class": "esb.bundles.core.sqlite.SqliteProducer"
