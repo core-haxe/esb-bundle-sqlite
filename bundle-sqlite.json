@@ -7,10 +7,12 @@
                 "sqlite": {
                     "consumer": {
                         "class": "esb.bundles.core.sqlite.SqliteConsumer",
+                        "uri": "sqlite://{domain}",
                         "max-instances": 10
                     },
                     "producer": {
-                        "class": "esb.bundles.core.sqlite.SqliteProducer"
+                        "class": "esb.bundles.core.sqlite.SqliteProducer",
+                        "uri": "sqlite://{domain}/{path}"
                     }
                 }
             }
