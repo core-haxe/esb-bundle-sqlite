@@ -1,5 +1,6 @@
 package esb.bundles.core.sqlite;
 
+import esb.core.config.sections.EsbConfig;
 import esb.core.bodies.CsvBody;
 import db.ITable;
 import promises.Promise;
@@ -23,27 +24,32 @@ class SqliteProducer implements IProducer {
 
     public var bundle:IBundle;
     public function start(uri:Uri) {
-        trace(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CREATING", uri);
         log.info('creating sqlite producer for ${uri.toString()}');
 
         var pathParts = uri.fullPath.split("/");
         var tableName = pathParts.pop();
         var dbName = pathParts.join("/");
 
-        dbName = "../test01.db";
+        dbName = EsbConfig.get().path(dbName, false);
 
         log.info('waiting for new records in "${dbName}"."${tableName}"');
         lookForPendingRecords(uri);
     }
 
     private function lookForPendingRecords(uri:Uri) {
+        var pollInterval = uri.paramInt("pollInterval", 1000);
+        var pkName = uri.param("primaryKey");
+        if (pkName == null) {
+            trace(">>>>>>>>>>>>>>>>>>>>>>>>>> NO PRIMARY KEY");
+            haxe.Timer.delay(lookForPendingRecords.bind(uri), pollInterval);
+            return;
+        }
+
         var pathParts = uri.fullPath.split("/");
         var tableName = pathParts.pop();
         var dbName = pathParts.join("/");
 
-        dbName = "../test01.db";
-
-        var pollInterval = uri.paramInt("pollInterval", 1000);
+        dbName = EsbConfig.get().path(dbName, false);
 
         var mapping = new Mapping();
         var statusColumn = mapping.mappedColummName(uri.param("statusColumn", "Status"));
@@ -89,13 +95,10 @@ class SqliteProducer implements IProducer {
             var processingValue = uri.param("processingValue", "processing");
             var completeValue = uri.param("completeValue", "complete");
 
-            trace("we got one!", record.values());
-            var pkName = "InputId";
+            var pkName = uri.param("primaryKey");
             var pkValue = record.field(pkName);
             record.field(statusColumn, processingValue);
             var query = QueryBinop(QOpAssign, QueryConstant(QIdent(pkName)), QueryConstant(QString(pkValue)));
-            trace("-------------------------------------------------------UPDATING RECORD>", queryExprToSql(query));
-            trace("-------------------------------------------> ", table.name);
             table.update(query, record).then(result -> {
                 var message = createMessage(CsvBody);
                 message.body.columns = record.fieldNames;

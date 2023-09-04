@@ -1,5 +1,6 @@
 package esb.bundles.core.sqlite;
 
+import esb.core.config.sections.EsbConfig;
 import esb.bundles.core.sqlite.operations.AddPivotOperation;
 import esb.bundles.core.sqlite.operations.AddOperation;
 import esb.core.bodies.RawBody;
@@ -32,7 +33,8 @@ class SqliteConsumer implements IConsumer {
                     var tableName = pathParts.pop();
                     var dbName = pathParts.join("/");
 
-dbName = "../test01.db";
+                    dbName = EsbConfig.get().path(dbName, false);
+
                     var db:IDatabase = DatabaseFactory.instance.createDatabase(DatabaseFactory.SQLITE, {
                         filename: dbName
                     });
