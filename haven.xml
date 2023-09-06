@@ -4,6 +4,9 @@
     <version>0.0.0</version>
 
     <commands>
+        <copy-config>
+            <copy-file source="${baseDir}/bundle-sqlite.json" destination="${configDir}/bundle-sqlite.json" />
+        </copy-config>
         <build>
             <haxe target="js" output="${buildDir}/bundle-sqlite.js" main="esb.core.BundleLoader" cleanUp="false" outputFilename="nodejs.hxml">
                 <dependencies>
@@ -30,8 +33,5 @@
                 </compiler-defines>
             </haxe>
         </build>
-        <install>
-            <copy-file source="${baseDir}/bundle-sqlite.json" destination="${configDir}/bundle-sqlite.json" />
-        </install>
     </commands>
 </project>
